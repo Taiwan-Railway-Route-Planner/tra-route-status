@@ -7,7 +7,7 @@
 </template>
 
 <script>
-    const default_layout = "default";
+    const default_layout = "empty";
     export default {
         computed: {
             layout() {
