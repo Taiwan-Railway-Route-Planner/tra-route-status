@@ -61,8 +61,9 @@ const startTesting = async function () {
         }
         exportNewData(resultString);
         hrend = process.hrtime(hrstart);
-        console.info('Execution time (hr): %ds %dms', hrend[0], hrend[1] / 1000000);
-
+        let minutes = ~~(hrend[0] / 60);
+        let seconds = hrend[0] - minutes * 60;
+        console.info('Execution time (hr): %dm %ds %dms', minutes,   seconds, hrend[1] / 1000000);
     }
     exportNewData(resultString);
 };
@@ -71,7 +72,7 @@ function checkResultOfRequest(result, departure, arrival) {
     if ("data" in result.data.data ){
         return`${departure.eng站名},${arrival.eng站名},${result.data.data.data.length} \n `;
     } else {
-        return`${departure.eng站名},${arrival.eng站名},null \n `;
+        return`${departure.eng站名},${arrival.eng站名},0\n `;
     }
 
 }
