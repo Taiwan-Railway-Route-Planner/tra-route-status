@@ -55,8 +55,9 @@ const startTesting = async function () {
         let firstElement = stationInfo.stations[i];
         for (let j = 0; j < stationInfo.stations.length; j++) {
             if (firstElement !== stationInfo.stations[j]) {
-                let result = await fetchRequestForGettingData(firstElement, stationInfo.stations[j]);
-                resultString += checkResultOfRequest(result, firstElement, stationInfo.stations[j]);
+                // let result = await fetchRequestForGettingData(firstElement, stationInfo.stations[j]);
+                // resultString += checkResultOfRequest(result, firstElement, stationInfo.stations[j]);
+                resultString += await doRequest(firstElement, stationInfo.stations[j]);
             }
         }
         exportNewData(resultString);
@@ -68,12 +69,23 @@ const startTesting = async function () {
     exportNewData(resultString);
 };
 
-function checkResultOfRequest(result, departure, arrival) {
+async function doRequest(firstElement, secondStation) {
+    let result = await fetchRequestForGettingData(firstElement, secondStation);
     if ("data" in result.data.data ){
-        return`${departure.eng站名},${arrival.eng站名},${result.data.data.data.length} \n `;
+        return checkResultOfRequest(result, firstElement, secondStation)
     } else {
-        return`${departure.eng站名},${arrival.eng站名},0\n `;
+        setTimeout(async function () {
+            return await doRequest(firstElement, secondStation)
+        }, 1000)
     }
+}
+
+function checkResultOfRequest(result, departure, arrival) {
+    // if ("data" in result.data.data ){
+        return`${departure.eng站名},${arrival.eng站名},${result.data.data.data.length} \n `;
+    // } else {
+    //     return`${departure.eng站名},${arrival.eng站名},0\n `;
+    // }
 
 }
 
